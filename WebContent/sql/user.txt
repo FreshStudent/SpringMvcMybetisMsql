@@ -1,0 +1,8 @@
+use blog;    
+DROP TABLE IF EXISTS t_user;    
+create table t_user    
+(    
+ userId  int primary key auto_increment,    
+ userName VARCHAR(50) not null,    
+ userAge int not null    
+);   
