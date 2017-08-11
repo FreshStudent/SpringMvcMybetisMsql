@@ -8,7 +8,7 @@
 
 | Date | About | Next | Remark |
 | ------------- |:-------------:| -----:| -----:|
-| 2017-8-11 |*   导入spring+mybetis的jar包 *   建立数据表，并生成相关的sql语句  | $1600 | 
-| col 2 is | centered | $12 | 
-| zebra stripes | are neat | $1 |
+| 2017-8-11 | 导入spring+mybetis的jar包 <br> 建立数据表，并生成相关的sql语句  | 通过导入Boostrap来进行页面显示 || 
+|  | |  || 
+ 
 
