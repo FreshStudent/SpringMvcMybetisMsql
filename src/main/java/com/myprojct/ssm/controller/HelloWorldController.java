@@ -18,7 +18,7 @@ public class HelloWorldController {
     public ModelAndView index(){
         
         ModelAndView modelAndView = new ModelAndView();  
-        modelAndView.addObject("message", "Hello World!");  
+        modelAndView.addObject("message", "Hello World!！！！！");  
         modelAndView.setViewName("index.jsp");  
         return modelAndView;
     }

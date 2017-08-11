@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+   <!-- 配置映射类的别名 -->
+ 	<typeAliases>
+      <typeAlias alias="User" type="com.myprojct.ssm.bean.User"/> 
+   </typeAliases>  
+   
+   <!-- 配置Mapper文件的路径 -->
+   <mappers>
+       <mapper resource="com/myprojct/ssm/mapper/UserMapper.xml"/>
+   </mappers>
+
+	<!-- 疑问：配置mapper的指向有多少种方式？ 参考链接：http://www.bug315.com/article/358.htm -->
+	<!-- 配置SQL隐射文件，该元素下面可以存0个或多个mapper或package子元素 -->
+	<!-- 用于映射一个SQL文件，简单告诉了 MyBatis去哪里找映射文件。
+	    resource：使用基于classpath的相对资源路径。如：mybatis/config/TestMapper.xml 
+		url：使用文件系统绝对路径。如：file:///D:/TestMapper.xml 
+		class：使用Mapper接口来映射SQL文件。如：mybatis.config.TestMapper 
+	-->
+	<!-- 通过配置包的方式，来批量映射。如下： <package name="mybatis.config"/> 表示注册mybatis.config包下面的所有接口为Mapper -->
+   
+</configuration>
