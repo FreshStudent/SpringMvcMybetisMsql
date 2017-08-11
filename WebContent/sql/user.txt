@@ -1,3 +1,5 @@
+--建User表语句  2017-8-11 
+
 use blog;    
 DROP TABLE IF EXISTS t_user;    
 create table t_user    
@@ -6,3 +8,9 @@ create table t_user
  userName VARCHAR(50) not null,    
  userAge int not null    
 );   
+
+--插入四条语句  2017-8-11 
+insert into t_user values(1,'小王',10);    
+insert into t_user values(2,'红红',11);    
+insert into t_user values(3,'明明',12);    
+insert into t_user values(4,'天天',13); 
