@@ -25,3 +25,12 @@
 - Next
     - 想要实现一个系统，相关的CRUD，但是暂时没确定做什么项目比较好？
     - 相关UML建模、SQL数据库之间建模工具需要选择，目的是为了说明白做了什么项目，及里面的相关架构。
+
+***
+####2017-08-13
+- About
+    - 利用spring的cron实现了定时任务，基于cron的注解方式，不用在xml中配置，相对来说比较方便，相关的demo是DemoTask。
+- Next
+    - 配置log日志输出
+    - 实现事务管理，配置AOP事务管理，用于sql插入失败时候回滚。
+    - 做一个MVC分层，建立相关：baseController、baseService、baseDao、Util(用面向接口方式来实现，interface——》interfaceImpl)
