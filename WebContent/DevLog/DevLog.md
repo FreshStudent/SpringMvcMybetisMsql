@@ -34,3 +34,4 @@
     - 配置log日志输出
     - 实现事务管理，配置AOP事务管理，用于sql插入失败时候回滚。
     - 做一个MVC分层，建立相关：baseController、baseService、baseDao、Util(用面向接口方式来实现，interface——》interfaceImpl)
+    - 逆向生成表及pojo+mapper+dao+dao.xml
