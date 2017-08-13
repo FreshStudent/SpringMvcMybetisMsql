@@ -1,4 +1,4 @@
-package com.myprojct.ssm.Task;
+package com.myprojct.ssm.task;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
