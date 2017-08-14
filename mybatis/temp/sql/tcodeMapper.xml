@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.myprojct.ssm.dao.tcodeMapper" >
+  <resultMap id="BaseResultMap" type="com.myprojct.ssm.bean.tcode" >
+    <result column="codeid" property="codeid" jdbcType="INTEGER" />
+    <result column="codeName" property="codename" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.myprojct.ssm.bean.tcode" >
+    insert into t_code (codeid, codeName)
+    values (#{codeid,jdbcType=INTEGER}, #{codename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.myprojct.ssm.bean.tcode" >
+    insert into t_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeid != null" >
+        codeid,
+      </if>
+      <if test="codename != null" >
+        codeName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeid != null" >
+        #{codeid,jdbcType=INTEGER},
+      </if>
+      <if test="codename != null" >
+        #{codename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

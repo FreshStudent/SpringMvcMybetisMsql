@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+	<!-- 这里注意一下，URL的配置，Windows的话，涉及路径的都需要用“\”这个来标识路径，但是在Mac中的话，需要用“/”来表示路径 -->
+	
+	<!-- 这是Oracle的连接jar包的本地路径配置 -->
+	<!-- <classPathEntry location="D:\developer\xxxxxxx\WEB-INF\lib\ojdbc6.jar" /> -->
+	
+	<!-- 这是Mysql的连接jar包的本地路径配置 -->
+	<classPathEntry location="/Users/liquanliang/Documents/AboutDev/Tomcat/apacheTomcat8.5.11/webapps/SpringMvcMybetisMsql/WEB-INF/lib/mysql-connector-java-5.1.25-bin.jar" />
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<commentGenerator>  
+		<property name="suppressAllComments" value="true" />  
+		</commentGenerator>
+	  
+		<!-- 这是Oracle的连接配置 -->
+		<!-- 
+		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+		    connectionURL="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.20.1.21)(PORT=1521))(FAILOVER=ON)(LOAD_BALANCE=ON)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=xxxx)))"
+		    userId="xxxxxx"
+		    password="xxxxx">
+		</jdbcConnection>
+		-->
+	
+		<!-- 这是Mysql的连接配置 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+		    connectionURL="jdbc:mysql://localhost:3306/blog"
+		    userId="root"
+		    password="123456">
+		</jdbcConnection>
+	
+		<javaTypeResolver >
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+	
+		<!-- 逆向生成的bean存放目录架构 -->
+		<javaModelGenerator targetPackage="com.myprojct.ssm.bean" targetProject="mybatis/temp">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+	
+		<!-- 逆向生成的sqlXml存放目录架构 -->
+		<sqlMapGenerator targetPackage="sql"  targetProject="mybatis/temp">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+	
+		<!-- 逆向生成的mapperXml文件的存放目录架构 -->
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.myprojct.ssm.dao"  targetProject="mybatis/temp">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+	
+		
+		
+		<!-- 只要配置多个table的相关信息，就可以批量逆向导出相关的表格了 -->
+		<table 
+			schema="" 
+			tableName="t_user" domainObjectName="tuser" 
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false" 
+			selectByExampleQueryId="false">
+		 </table>
+		 
+		 <table 
+			schema="" 
+			tableName="t_code" domainObjectName="tcode" 
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false" 
+			selectByExampleQueryId="false">
+		 </table>
+	  
+	</context>
+</generatorConfiguration>
