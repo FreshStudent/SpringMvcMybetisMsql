@@ -1,4 +1,4 @@
-package com.myprojct.ssm.util;
+package com.myprojct.ssm.util.genTable;
 
 import java.io.File;
 import java.io.IOException;

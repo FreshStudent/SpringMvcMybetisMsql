@@ -1,4 +1,4 @@
-package com.myprojct.ssm.util;
+package com.myprojct.ssm.util.genTable;
 
 /**
  * 执行main函数，读取generatorTableConfig.xml文件来实现逆向导出数据表
