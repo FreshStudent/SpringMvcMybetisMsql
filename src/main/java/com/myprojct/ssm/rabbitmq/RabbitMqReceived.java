@@ -21,6 +21,7 @@ public class RabbitMqReceived {
 			connection = factory.newConnection();
 
 			Channel channel = connection.createChannel();
+			
 			// 声明队列，主要为了防止消息接收者先运行此程序，队列还不存在时创建队列。
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 			System.out.println(" [*] Waiting for messages. To exit press CTRL+C");

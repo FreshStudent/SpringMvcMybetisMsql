@@ -29,8 +29,10 @@ public class RabbitMqSend {
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 			// 发送的消息
 			String message = "hello world you are doubihahah!";
+			String message12 = "hello world you are 12121!";
 			// 往队列中发出一条消息
 			channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+			channel.basicPublish("", QUEUE_NAME, null, message12.getBytes());
 			System.out.println(" [x] Sent '" + message + "'");
 			// 关闭频道和连接
 			channel.close();
