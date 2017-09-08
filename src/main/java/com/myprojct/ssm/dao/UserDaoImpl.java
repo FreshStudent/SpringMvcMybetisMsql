@@ -10,7 +10,7 @@ import com.myprojct.ssm.bean.User;
  * @time 2015.5.15 
  */  
 @Component  
-public class UserDaoImpl implements UserDao{  
+public class UserDaoImpl implements UserDao {  
     @Autowired  
     private UserMapper userMapper;  
     @Override  
