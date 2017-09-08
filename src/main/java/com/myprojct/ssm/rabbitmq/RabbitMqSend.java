@@ -27,9 +27,11 @@ public class RabbitMqSend {
 			Channel channel = connection.createChannel();
 			// 指定一个队列
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+			
 			// 发送的消息
 			String message = "hello world you are doubihahah!";
 			String message12 = "hello world you are 12121!";
+			
 			// 往队列中发出一条消息
 			channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
 			channel.basicPublish("", QUEUE_NAME, null, message12.getBytes());
