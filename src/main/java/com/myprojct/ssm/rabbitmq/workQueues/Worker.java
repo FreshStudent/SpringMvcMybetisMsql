@@ -5,14 +5,19 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 
 public class Worker {
-	private static final String TASK_QUEUE_NAME = "task_queue";
+	private static final String TASK_QUEUE_NAME = "task_queue_NewTask";
 
 	public static void main(String[] argv) throws Exception {
+		
+		// 打开连接
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
+		factory.setHost("localhost");  
+		
+		// 创建频道
 		final Connection connection = factory.newConnection();
 		final Channel channel = connection.createChannel();
-
+		
+		// 声明队列
 		channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
@@ -33,6 +38,7 @@ public class Worker {
 				}
 			}
 		};
+		
 		boolean autoAck = false;
 		channel.basicConsume(TASK_QUEUE_NAME, autoAck, consumer);
 	}

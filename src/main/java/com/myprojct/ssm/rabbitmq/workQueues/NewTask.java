@@ -8,7 +8,7 @@ import com.rabbitmq.client.MessageProperties;
 
 public class NewTask {
 
-	private static final String TASK_QUEUE_NAME = "task_queue";
+	private static final String TASK_QUEUE_NAME = "task_queue_NewTask";
 
 	public static void main(String[] argv) throws java.io.IOException {
 
@@ -22,7 +22,8 @@ public class NewTask {
 
 			String message = getMessage(argv);
             
-			for(int i=0;i<=10;i++) {
+			//发1000条信息，然后利用worker进行获取
+			for(int i=0;i<=1000;i++) {
 				String messageTemp = message+"-"+(i);
 				channel.basicPublish("", TASK_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, messageTemp.getBytes());
 				System.out.println(" [x] Sent '" + messageTemp+"'");
