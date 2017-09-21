@@ -13,26 +13,45 @@
 		http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 		
 	<!-- 配置数据源 -->
-	<bean id="dataSource"
+	<!-- 这是原来配置Mysql数据库的方式，现在改为读取properties文件  begin-->
+	<!-- <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/blog" />
 		<property name="username" value="root" />
 		<property name="password" value="123456" />
 	</bean>
+	-->
+	<!-- 这是原来配置Mysql数据库的方式，现在改为读取properties文件  end-->
+	
+	<!-- 改为读取properties文件配置Mysql数据库  begin-->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	    <property name="locations">   <!-- locations:可以配置多个properties文件  -->
+	   		<list>
+	   			<!-- 配置Mysql的配置文件，如果有别的配置文件，在下面添加即可 -->
+	  			<value>classpath:mysqlDB.properties</value>
+	  		</list>
+	    </property>  
+	    <property name="ignoreUnresolvablePlaceholders" value="true" />   
+	</bean>  
+	
+	<bean id="dataSource" class="${sysDB.dataSource}"> <!-- 这些配置Spring在启动时会去mysqlDB.properties中找 -->  
+		<property name="driverClassName" value="${sysDB.driverClass}" />  
+		<property name="url" value="${sysDB.jdbcUrl}" />  
+		<property name="username" value="${sysDB.user}" />  
+		<property name="password" value="${sysDB.password}" />  
+	</bean> 	 
+	<!-- 改为读取properties文件配置Mysql数据库  end-->
 
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 	    <property name="configLocation" value="classpath:MyBatisConf.xml" />
-		<!-- <property name="typeAliasesPackage" value="com.tiantian.ckeditor.model" 
-			/> -->
 	</bean>
 
-	  <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
-       <property name="mapperInterface"  
-           value="com.myprojct.ssm.mapper.UserMapper" />  
-       <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+		<property name="mapperInterface" value="com.myprojct.ssm.mapper.UserMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />  
     </bean> 
 	
 	
@@ -53,8 +72,6 @@
 	<context:component-scan base-package="com.myprojct.ssm.*" />
     
 	<!-- 定时器相关配置 end -->
-	
-	
 	
 
 </beans>
