@@ -32,14 +32,14 @@
 	  			<value>classpath:mysqlDB.properties</value>
 	  		</list>
 	    </property>  
-	    <property name="ignoreUnresolvablePlaceholders" value="true" />   
+	    <property name="ignoreUnresolvablePlaceholders" value="true" />    
 	</bean>  
 	
 	<bean id="dataSource" class="${sysDB.dataSource}"> <!-- 这些配置Spring在启动时会去mysqlDB.properties中找 -->  
-		<property name="driverClassName" value="${sysDB.driverClass}" />  
-		<property name="url" value="${sysDB.jdbcUrl}" />  
-		<property name="username" value="${sysDB.user}" />  
-		<property name="password" value="${sysDB.password}" />  
+		<property name="driverClassName" value="${sys_DB.driverClass}" />  
+		<property name="url" value="${sys_DB.jdbcUrl}" />  
+		<property name="username" value="${sys_DB.user}" />  
+		<property name="password" value="${sys_DB.password}" />  
 	</bean> 	 
 	<!-- 改为读取properties文件配置Mysql数据库  end-->
 
