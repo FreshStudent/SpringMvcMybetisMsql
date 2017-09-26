@@ -5,7 +5,7 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 
 public class Worker {
-	private static final String TASK_QUEUE_NAME = "task_queue_NewTask";
+	private static final String TASK_QUEUE_NAME = "task_queue_NewTask22";
 
 	public static void main(String[] argv) throws Exception {
 		
@@ -31,7 +31,7 @@ public class Worker {
 
 				System.out.println(" [x] Received '" + message + "'");
 				try {
-					doWork(message);
+					//doWork(message);
 				} finally {
 					System.out.println(" [x] Done");
 					channel.basicAck(envelope.getDeliveryTag(), false);

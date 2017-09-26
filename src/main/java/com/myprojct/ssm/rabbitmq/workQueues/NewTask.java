@@ -8,7 +8,7 @@ import com.rabbitmq.client.MessageProperties;
 
 public class NewTask {
 
-	private static final String TASK_QUEUE_NAME = "task_queue_NewTask";
+	private static final String TASK_QUEUE_NAME = "task_queue_NewTask22";
 
 	public static void main(String[] argv) throws java.io.IOException {
 
