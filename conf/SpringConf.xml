@@ -10,7 +10,12 @@
 		http://www.springframework.org/schema/context  
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		http://www.springframework.org/schema/task  
-		http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+		http://www.springframework.org/schema/task/spring-task-3.2.xsd" >
+		
+	<!-- 引入RabbitMq的配置文件 begin-->
+	<import resource="classpath:SpringRabbitMqConf.xml" />
+	<!-- 引入RabbitMq的配置文件 end-->	
+		
 		
 	<!-- 配置数据源 -->
 	<!-- 这是原来配置Mysql数据库的方式，现在改为读取properties文件  begin-->
@@ -30,12 +35,15 @@
 	   		<list>
 	   			<!-- 配置Mysql的配置文件，如果有别的配置文件，在下面添加即可 -->
 	  			<value>classpath:mysqlDB.properties</value>
+	  			
+	  			<!-- 配置RabbitMq的配置文件 -->
+	  			<value>classpath:rabbitMqConf.properties</value>
 	  		</list>
 	    </property>  
 	    <property name="ignoreUnresolvablePlaceholders" value="true" />    
 	</bean>  
 	
-	<bean id="dataSource" class="${sysDB.dataSource}"> <!-- 这些配置Spring在启动时会去mysqlDB.properties中找 -->  
+	<bean id="dataSource" class="${sys_DB.dataSource}"> <!-- 这些配置Spring在启动时会去mysqlDB.properties中找 -->  
 		<property name="driverClassName" value="${sys_DB.driverClass}" />  
 		<property name="url" value="${sys_DB.jdbcUrl}" />  
 		<property name="username" value="${sys_DB.user}" />  
@@ -57,7 +65,6 @@
 	
 	
 	<!-- 定时器相关配置 begin -->
-	
 	<!-- 
 	注：理论上只需要加上下面的配置就可以了，其他参数都不是必须的。 配置完成，运行就能看到效果！
 	总结：这种定时器的使用，不需要集成其他父类定时器，使用简单方便！功能也很强大！
@@ -70,8 +77,6 @@
     
     <!-- 自动扫描注解的bean -->
 	<context:component-scan base-package="com.myprojct.ssm.*" />
-    
 	<!-- 定时器相关配置 end -->
-	
 
 </beans>

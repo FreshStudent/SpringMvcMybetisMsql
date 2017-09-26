@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/rabbit  
+     http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">  
+    <!--配置connection-factory，指定连接rabbit server参数 -->  
+    <bean id="rabbitConnectionFactory" class="com.rabbitmq.client.ConnectionFactory">  
+        <property name="host" value="${rabbitmq.host}" />  
+        <property name="port" value="${rabbitmq.port}" />  
+        <property name="username" value="${rabbitmq.username}" />  
+        <property name="password" value="${rabbitmq.password}" />
+    </bean>  
+  
+    <bean id="mqConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">  
+        <constructor-arg ref="rabbitConnectionFactory" />
+    </bean> 
+          
+    <!--定义rabbit template用于数据的接收和发送 -->  
+    <rabbit:template id="amqpTemplate"  connection-factory="mqConnectionFactory"  exchange="flowExchange" />  
+          
+    <!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成 -->  
+    <rabbit:admin id="amqpAdmin" connection-factory="mqConnectionFactory" />  
+  
+  
+     <!-- 移动东莞停开机队列 -->
+     <rabbit:queue name="flowChangeOrder" durable="true" auto-delete="false" exclusive="false" />  
+    
+     
+     <!-- 定义direct exchange，绑定queue -->
+    <rabbit:direct-exchange name="flowExchange" durable="true" auto-delete="false">  
+        <rabbit:bindings>  
+           
+            <rabbit:binding queue="flowChangeOrder" key="flowChangeOrder"></rabbit:binding>
+            
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    
+    <!-- 东莞移动停开机消费者 -->
+    <bean id="myConsumer" class="com.myprojct.ssm.rabbitmqSpringDemo.MqConsumer">
+       <property name="serviceName" value="ChangeOrder"/>  
+       <property name="timeInterval" value="1000"/>  
+    </bean>
+
+</beans>  
