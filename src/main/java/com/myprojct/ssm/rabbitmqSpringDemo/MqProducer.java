@@ -61,12 +61,10 @@ public class MqProducer {
 		 * 运用配置好的Spring整合RabbitMq来发送信息
 		 */
 		MessageProducer messageProducer = (MessageProducer)ct.getBean("messageProducer");
-		messageProducer.sendMessage("flowChangeOrder", "haha");
-		messageProducer.sendMessage("flowChangeOrder", "haha");
-		messageProducer.sendMessage("flowChangeOrder", "haha");
-		messageProducer.sendMessage("flowChangeOrder", "haha");
-		messageProducer.sendMessage("flowChangeOrder", "haha");
-		messageProducer.sendMessage("flowChangeOrder", "haha");
+		for(int i=0;i<10000;i++) {
+			System.out.println("sending message :"+i);
+			messageProducer.sendMessage("flowChangeOrder", "YYYYY");
+		}
 		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
