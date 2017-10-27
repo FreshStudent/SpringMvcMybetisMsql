@@ -40,7 +40,7 @@ messageProducer.sendMessage("flowChangeOrder", "HelloTest5");
 ```
 
 三、RabbitMQ的结构图
-![RabbitMQ的结构图](https://github.com/FreshStudent/HeadFirstDesignPatternsTest/blob/master/src/bookCode/ch2/part1/ch2_part1UML.png)
+![RabbitMQ的结构图](https://github.com/FreshStudent/SpringMvcMybetisMsql/blob/master/src/main/java/com/myprojct/ssm/rabbitmqSpringDemo/RabbitMq结构图.png)
 
 四、几个概念说明：
 
