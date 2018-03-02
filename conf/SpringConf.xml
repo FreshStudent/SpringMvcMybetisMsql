@@ -15,8 +15,10 @@
 	<!-- 引入RabbitMq的配置文件 begin-->
 	<import resource="classpath:SpringRabbitMqConf.xml" />
 	<!-- 引入RabbitMq的配置文件 end-->	
-		
-		
+	
+	<!-- 2018-03-02 AOP 开启AspectJ自动扫描,因为spring默认是关闭的 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />  
+	
 	<!-- 配置数据源 -->
 	<!-- 这是原来配置Mysql数据库的方式，现在改为读取properties文件  begin-->
 	<!-- <bean id="dataSource"

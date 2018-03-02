@@ -27,19 +27,22 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
 	public void onApplicationEvent(ContextRefreshedEvent evt) {
 		if (evt.getApplicationContext().getParent() == null) { // root application context 没有parent
 
-			final MessageConsumer messageConsumer = (MessageConsumer) evt.getApplicationContext().getBean("messageConsumer");
-
-			try {
-				executor.execute(new Runnable() {
-					public void run() {
-						while (true) {
-							messageConsumer.receiveMessage("flowChangeOrder");
-						}
-					}
-				});
-			} catch (Exception e) {
-				logger.error("ChannelStausFlowSyncCus" + "channelName" + " ,happens error", e);
-			}
+			
+			//debug日志太多 先屏蔽 2018-03-02  begin
+//			final MessageConsumer messageConsumer = (MessageConsumer) evt.getApplicationContext().getBean("messageConsumer");
+//
+//			try {
+//				executor.execute(new Runnable() {
+//					public void run() {
+//						while (true) {
+//							messageConsumer.receiveMessage("flowChangeOrder");
+//						}
+//					}
+//				});
+//			} catch (Exception e) {
+//				logger.error("ChannelStausFlowSyncCus" + "channelName" + " ,happens error", e);
+//			}
+			//debug日志太多 先屏蔽 2018-03-02  end
 
 		}
 	}

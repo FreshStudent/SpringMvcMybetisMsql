@@ -27,11 +27,11 @@
   
   
      <!-- 移动东莞停开机队列 -->
-     <rabbit:queue name="flowChangeOrder" durable="true" auto-delete="false" exclusive="false" />  
+     <rabbit:queue id="flowChangeOrder" name="flowChangeOrder" durable="true" auto-delete="false" exclusive="false" />  
     
      
      <!-- 定义direct exchange，绑定queue -->
-    <rabbit:direct-exchange name="flowExchange" durable="true" auto-delete="false">  
+    <rabbit:direct-exchange id="flowExchange" name="flowExchange" durable="true" auto-delete="false">  
         <rabbit:bindings>  
            
             <rabbit:binding queue="flowChangeOrder" key="flowChangeOrder"></rabbit:binding>

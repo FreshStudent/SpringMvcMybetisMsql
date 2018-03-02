@@ -13,7 +13,7 @@ import com.myprojct.ssm.bean.User;
 public class UserDaoImpl implements UserDao {  
     @Autowired  
     private UserMapper userMapper;  
-    @Override  
+
     public User findUserById(int id) {  
         User user = userMapper.selectUserById(id);  
          return user;   

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class DemoTask {
 	
 	 // 每五秒执行一次
-    @Scheduled(cron = "0/5 * * * * ?")
+	//@Scheduled(cron = "0/5 * * * * ?")    // 先屏蔽影响测试
     public void TaskJob() {
         System.out.println("DemoTask ----test second annotation style ...");
     }

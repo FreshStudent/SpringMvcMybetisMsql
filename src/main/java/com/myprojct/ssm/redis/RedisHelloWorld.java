@@ -18,7 +18,7 @@ public class RedisHelloWorld {
 		             System.out.println(new String(jr.get(key1)));
 		             System.out.println(new String(jr.get(key2)));
 		        } catch (Exception e) {
-		// TODO: handle exception
+
 		        }
 		    }
 }
