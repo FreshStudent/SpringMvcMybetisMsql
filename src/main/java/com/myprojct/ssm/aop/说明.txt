@@ -1,0 +1,6 @@
+Spring AOP 几点说明（2018-03-04）：
+1、编写待切入类AopTest
+2、AOP类是AspectjLog
+3、需要配置Spring的XML文件为
+	<!-- 2018-03-02 AOP 开启AspectJ自动扫描,因为spring默认是关闭的 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" /> 
