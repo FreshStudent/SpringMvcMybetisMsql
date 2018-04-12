@@ -59,29 +59,28 @@
         resolveLazily:一个类似懒加载的属性.可以定义该属性.让解析文件的时候再抛异常,然后Controller中定义异常处理的方法
      -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    <property name="maxUploadSize" value="209715200" /> <!--200M  -->
-    <property name="defaultEncoding" value="UTF-8" />   <!--默认编码-->
-    <property name="resolveLazily" value="true" />
+	    <property name="maxUploadSize" value="209715200" /> <!--200M  -->
+	    <property name="defaultEncoding" value="UTF-8" />   <!--默认编码-->
+	    <property name="resolveLazily" value="true" />
     </bean>
     
-    <!-- 不需要重启即可加载xml配置文件 -->
+    <!-- 
+    		2018-04-12
+	    Spring osgi bundle 热部署
+	    不需要重启即可加载xml配置文件 
+    -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        
         <property name="basenames">
             <list>
-                <value>/WEB-INF/classes/conf/properties/webgear_messages</value>
+                <value>/WEB-INF/classes/properties/reloadResourceBundleMessage</value>
             </list>
         </property>
-		
         <property name="cacheSeconds">
-            <value>180</value>
+            <value>1</value>
         </property>
         <property name="defaultEncoding">
 			<value>utf-8</value>
 		</property>
     </bean>
-    
-    
-    
     
 </beans>

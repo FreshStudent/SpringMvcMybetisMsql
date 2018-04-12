@@ -1,0 +1,33 @@
+web项目如果改变了properties文件的话，需要重启，但是如果不想重启的话，就使用OSGI热部署的方式来实现
+Spring已经整合的Spring+Osgi+Bundle的方法来实现了
+
+需要的步骤是：
+1、在Spring的配置文件中执行加载的文件路径：
+	<!-- 
+    		2018-04-12
+	    Spring osgi bundle 热部署
+	    不需要重启即可加载xml配置文件 
+    -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>/WEB-INF/classes/properties/reloadResourceBundleMessage</value>
+            </list>
+        </property>
+        
+        <!--定义重新加载的时间，单位是秒-->
+        <property name="cacheSeconds">
+            <value>1</value>
+        </property>
+        <property name="defaultEncoding">
+			<value>utf-8</value>
+		</property>
+    </bean>
+    
+2、java文件读取相关的properties文件的id
+
+	 String reloadMessag = applicationContext.getMessage("reload.message", null, null);
+	 
+That is easy example~~
+    
+   
