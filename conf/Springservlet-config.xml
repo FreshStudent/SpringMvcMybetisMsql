@@ -64,4 +64,24 @@
     <property name="resolveLazily" value="true" />
     </bean>
     
+    <!-- 不需要重启即可加载xml配置文件 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        
+        <property name="basenames">
+            <list>
+                <value>/WEB-INF/classes/conf/properties/webgear_messages</value>
+            </list>
+        </property>
+		
+        <property name="cacheSeconds">
+            <value>180</value>
+        </property>
+        <property name="defaultEncoding">
+			<value>utf-8</value>
+		</property>
+    </bean>
+    
+    
+    
+    
 </beans>
