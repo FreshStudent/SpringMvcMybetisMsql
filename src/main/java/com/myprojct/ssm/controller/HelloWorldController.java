@@ -16,7 +16,7 @@ public class HelloWorldController {
 	//  访问路径  http://localhost:8080/helloworld/index
     @RequestMapping(value="/index", method = {RequestMethod.GET})  //method = {RequestMethod.GET} : 只接受来至 get的请求
     public ModelAndView index(){
-        
+            
         ModelAndView modelAndView = new ModelAndView();  
         modelAndView.addObject("message", "Hello World!！！！！");  
         modelAndView.setViewName("index.jsp");  
