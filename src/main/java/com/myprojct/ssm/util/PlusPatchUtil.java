@@ -9,42 +9,53 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlusPatchUtil {
 
-		public static String patchFile="//Users//liquanliang//git//FZS_FLOW_PLATFORM 3//change.txt";//补丁文件,由git diff tag1 tag2 --name-only 生成  
+		public static String projectPath = "//Users//liquanliang//git//FZS_FLOW_PLATFORM 3";//项目文件夹路径
+	
+		public static String patchFile = projectPath+"//change.txt";//补丁文件,由git diff tag1 tag2 --name-only 生成  
      
-	    public static String projectPath="//Users//liquanliang//git//FZS_FLOW_PLATFORM 3";//项目文件夹路径
+	    public static String classPath = projectPath+"//target//fzsFlow//WEB-INF//classes";//class项目存放路径  
+
+	    public static String resourcesPath = projectPath+"//target//fzsFlow//resources";//resources存放路径 
 	      
-	    public static String webContent="webapp";//web应用文件夹名  
+	    public static String desPath = projectPath+"//update_pkg";//补丁文件包存放路径  
 	      
-	    public static String classPath="//Users//liquanliang//git/FZS_FLOW_PLATFORM 3//target//fzsFlow//WEB-INF//classes";//class存放路径  
-	      
-	    public static String desPath="//Users//liquanliang//git/FZS_FLOW_PLATFORM 3//update_pkg";//补丁文件包存放路径  
-	      
-	    public static String version="20140711";//补丁版本  
-	      
-	      
+	    public static String version = "20140711";//补丁版本  
+	     
+	    
+	    //git diff tag1 tag2 --name-only    所输出的log日志，直接copy过来就好
+	    public static String changeLogStr = "src/main/java/com/fzs/flow/bean/FlowChannel.java\n" + 
+	    		"src/main/java/com/fzs/flow/dao/FlowTransactionDao.java\n" + 
+	    		"src/main/java/com/fzs/flow/service/impl/FlowChargeServiceImpl.java\n" + 
+	    		"src/main/resources/conf/sql/FlowChannelDao.xml\n" + 
+	    		"src/main/resources/conf/sql/FlowTransactionDao.xml\n" + 
+	    		"src/main/webapp/WEB-INF/jsp/admin/channel/subChannelEdit.jsp\n" + 
+	    		"src/main/webapp/resources/js/admin/channel/subChannelConf.js";
+	    
 	    /** 
 	     * @param args 
 	     * @throws Exception  
 	     */  
 	    public static void main(String[] args) throws Exception {  
-	        copyFiles(getPatchFileList());  
+//	        copyFiles(getPatchFileList());    //读取Txt的方式
+	        copyFiles(getPatchFileList(changeLogStr));   //读取Str的方式
+	    } 
+	    
+	    public static List<String> getPatchFileList(String changeLogStr) throws Exception{  
+	        String str[] = changeLogStr.split("\n");
+	        return Arrays.asList(str);
 	    }  
-	      
+	    
 	    public static List<String> getPatchFileList() throws Exception{  
 	        List<String> fileList=new ArrayList<String>();  
 	        FileInputStream f = new FileInputStream(patchFile);   
 	        BufferedReader dr=new BufferedReader(new InputStreamReader(f,"utf-8"));  
 	        String line;  
 	        while((line=dr.readLine())!=null){   
-//	            if(line.indexOf("Index:")!=-1){  
-//	                line=line.replaceAll(" ","");  
-//	                line=line.substring(line.indexOf(":")+1,line.length());  
-//	                fileList.add(line);  
-//	            }  
 	            fileList.add(line);  
 	        }   
 	        return fileList;  
@@ -69,19 +80,36 @@ public class PlusPatchUtil {
 	                }  
 	                copyFile(fullFileName, desFileNameStr);  
 	                System.out.println(fullFileName+"复制完成");  
-	            }else{//对普通目录的处理  
-	                String desFileName=fullFileName.replaceAll(webContent,"");  
-	                fullFileName=projectPath+"/"+fullFileName;//将要复制的文件全路径  
-	                String fullDesFileNameStr=desPath+"/"+version+"/"+desFileName;  
-	                String desFilePathStr=fullDesFileNameStr.substring(0,fullDesFileNameStr.lastIndexOf("/"));  
-	                File desFilePath=new File(desFilePathStr);  
-	                if(!desFilePath.exists()){  
-	                    desFilePath.mkdirs();  
-	                }  
-	                copyFile(fullFileName, fullDesFileNameStr);  
-	                System.out.println(fullDesFileNameStr+"复制完成");  
-	            }  
-	              
+	            }else if(fullFileName.indexOf("/resources/")!=-1){//对resource目录进行处理
+	            		
+	            		String resourceFullPath = null; //将要复制文件全路径
+	            		String desFullPath = null;      //复制文件后需要放置路径
+	            	
+	            		String desFileName=fullFileName.substring(fullFileName.indexOf("/resources/"),fullFileName.length());
+	            		resourceFullPath = projectPath+"/"+fullFileName;//将要复制的文件全路径 
+	            		desFullPath = desPath+"/"+version+desFileName;  
+	            		File desFilePath=new File(desFullPath.substring(0,desFullPath.lastIndexOf("/")));  
+ 	                if(!desFilePath.exists()){  
+ 	                    desFilePath.mkdirs();  
+ 	                }
+	            		copyFile(resourceFullPath, desFullPath);  
+	            		System.out.println(resourceFullPath+"复制完成"); 
+	            		
+	            } else if(fullFileName.indexOf("/WEB-INF/")!=-1 && fullFileName.endsWith(".jsp")) { //处理JSP
+
+	            		String resourceFullPath = null; //将要复制文件全路径
+	            		String desFullPath = null;      //复制文件后需要放置路径
+	            		String desFileName=fullFileName.substring(fullFileName.indexOf("/WEB-INF/"),fullFileName.length());
+	            		resourceFullPath = projectPath+"/"+fullFileName;//将要复制的文件全路径 
+	            		desFullPath = desPath+"/"+version+desFileName;  
+	            		File desFilePath=new File(desFullPath.substring(0,desFullPath.lastIndexOf("/")));  
+		                if(!desFilePath.exists()){  
+		                    desFilePath.mkdirs();  
+		                }
+	            		copyFile(resourceFullPath, desFullPath);  
+	            		System.out.println(resourceFullPath+"复制完成");
+	            	
+	            }
 	        }  
 	          
 	    }  
