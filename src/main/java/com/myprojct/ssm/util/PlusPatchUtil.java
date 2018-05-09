@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 
 public class PlusPatchUtil {
 	
+	
 		public static String projectPath = "//Users//liquanliang//git//FZS_FLOW_PLATFORM 3";//本地项目文件夹路径
 	
 		public static String patchFile = projectPath+"//change.txt";//补丁文件,由git diff tag1 tag2 --name-only 生成  
@@ -50,15 +51,43 @@ public class PlusPatchUtil {
 	     
 	    public static int filesNums = 0;    //已经处理文件总数
 	    
+	    public static int preFileCount = 0;  //待处理文件总数
+	    
+	    public static int foundInnerClassFileCount = 0;  //发现内部类次数
+
+	    public static int innerClassFileCount = 0;  //内部类总数，包含源文件
+
+	    public static List<String> innerClassFileUrl = new ArrayList<String>();  //内部类文件列表
+
+	    public static List<String> copyFilesFullUrlLog = new ArrayList<String>();  //记录复制文件的全路径 
+	    
 	    //git diff tag1 tag2 --name-only    所输出的log日志，直接copy过来就好
-	    public static String changeLogStr = "src/main/java/com/fzs/flow/http/action/admin/FlowTransactionAction.java\n" + 
+	    public static String changeLogStr = 
+	    		"src/main/java/com/fzs/flow/http/action/admin/FlowTransactionAction.java\n" + 
 	    		"src/main/java/com/fzs/flow/bean/FlowChannel.java\n" + 
 	    		"src/main/java/com/fzs/flow/dao/FlowTransactionDao.java\n" + 
 	    		"src/main/java/com/fzs/flow/service/impl/FlowChargeServiceImpl.java\n" + 
 	    		"src/main/resources/conf/sql/FlowChannelDao.xml\n" + 
 	    		"src/main/resources/conf/sql/FlowTransactionDao.xml\n" + 
 	    		"src/main/webapp/WEB-INF/jsp/admin/channel/subChannelEdit.jsp\n" + 
-	    		"src/main/webapp/resources/js/admin/channel/subChannelConf.js\n";
+	    		"src/main/webapp/resources/js/admin/channel/subChannelConf.js\n" +
+	    		"src/main/filters/dev/deployment.properties\n" + 
+	    		"src/main/filters/product/deployment.properties\n" + 
+	    		"src/main/filters/test/deployment.properties\n" + 
+	    		"src/main/java/com/fzs/flow/bean/Flow2ProductServ.java\n" + 
+	    		"src/main/java/com/fzs/flow/http/action/admin/Flow2SourceProdcutAction.java\n" + 
+	    		"src/main/java/com/fzs/flow/quartz/ChannelDiscountChangeQuartz.java\n" + 
+	    		"src/main/java/com/fzs/flow/trade/pub/shijilong/SJLProviderHandler.java\n" + 
+	    		"src/main/resources/conf/properties/deployment.properties\n"+
+	    		"src/main/java/com/fzs/flow/channel/handler/BasicAPICallBackChannelHandler.java\n" + 
+			"src/main/java/com/fzs/flow/http/action/admin/FlowTransactionAction.java\n" + 
+			"src/main/java/com/fzs/flow/http/action/api/FlowExternalApiAction.java\n" + 
+			"src/main/java/com/fzs/flow/http/callback/FlowAccessCallbackAction.java\n" + 
+			"src/main/java/com/fzs/flow/modules/callback/controller/FlowAccessCallbackController.java\n" + 
+			"src/main/java/com/fzs/flow/modules/recharge/controller/FlowExternalApiController.java\n" + 
+			"src/main/resources/conf/message/dynamic-config.properties\n" + 
+			"src/main/resources/conf/rabbitmq/springRabbitMqConf.xml\n" + 
+			"src/main/resources/log4j.properties\n";
 	    
 	    public static int countFiles = 0;// 声明统计文件个数的变量
 	    
@@ -84,12 +113,15 @@ public class PlusPatchUtil {
 	    
 	    //复制文件
 	    public static void copyFiles(List<String> list){ 
-
-	        System.out.println("changelog：git diff tag1 tag2 --name-only \n"+changeLogStr);
-	        System.out.println("================================================");
+	    		System.out.println("changelog：git diff tag1 tag2 --name-only ");
+	    		System.out.println("********************************************************");
+	    		System.out.println(changeLogStr);
+			System.out.println("********************************************************");
 	        
+			List<String> notFoundFiles = new ArrayList<String>();
+			
 	        for(String fullFileName:list){  
-	            if(fullFileName.indexOf("src/main/java/")!=-1){     //处理Class文件 
+	            if(fullFileName.indexOf("src/main/java/")!=-1&&fullFileName.endsWith("java")){     //处理Class文件 
 	                String fileName=fullFileName.replace("src/main/java","");  
 	                fullFileName=classPath+fileName;  
 	                if(fileName.endsWith(".java")){  
@@ -102,6 +134,7 @@ public class PlusPatchUtil {
 	                List<String> innerClassPath = getInnerClassPath(classFileFolder, keyWord);
 	               
 	                if(innerClassPath.size()>1){//有内部类
+	                		foundInnerClassFileCount = foundInnerClassFileCount+1;
 	                		for (String string : innerClassPath) {
 	                			String desFileFolderStr=desPath+"/"+version+"/WEB-INF/classes";   //文件输出路径
 	                			String innnerClassName = string.substring(string.lastIndexOf("/"),string.length()); //内部类名称
@@ -111,8 +144,11 @@ public class PlusPatchUtil {
 							    desFilePath.mkdirs();  
 							}
 	                			copyFile(string, innerClassOutputFolder);  
+	                			//System.out.println(filesNums+1+string+"复制完成");
+	                			copyFilesFullUrlLog.add(filesNums+1+string+"复制完成");
 	                			filesNums = filesNums+1;
-	                			System.out.println(string+"复制完成");
+	                			innerClassFileCount = innerClassFileCount+1;
+	                			innerClassFileUrl.add(string);
 						}
 	                }else {  //不存在内部类
 	                		String tempDesPath=fileName.substring(0,fileName.lastIndexOf("/"));  
@@ -123,43 +159,97 @@ public class PlusPatchUtil {
 		                    desFilePath.mkdirs();  
 		                }
 	                		copyFile(fullFileName, desFileNameStr);  
+//	                		System.out.println(filesNums+1+fullFileName+"复制完成");
+	                		copyFilesFullUrlLog.add(filesNums+1+fullFileName+"复制完成");
 	                		filesNums = filesNums+1;
-	                		System.out.println(fullFileName+"复制完成");
 	                }
 	                 
-	                
-	            }else if(fullFileName.indexOf("/resources/")!=-1){	//对resource目录进行处理
-	            		
-	            		String resourceFullPath = null; //将要复制文件全路径
+	            }else if(fullFileName.contains("src/main/webapp/")) { //处理JSP、JS文件
+		            	String resourceFullPath = null; //将要复制文件全路径
 	            		String desFullPath = null;      //复制文件后需要放置路径
 	            	
-	            		String desFileName=fullFileName.substring(fullFileName.indexOf("/resources/"),fullFileName.length());
-	            		resourceFullPath = projectPath+"/"+fullFileName;//将要复制的文件全路径 
-	            		desFullPath = desPath+"/"+version+desFileName;  
-	            		File desFilePath=new File(desFullPath.substring(0,desFullPath.lastIndexOf("/")));  
- 	                if(!desFilePath.exists()){  
- 	                    desFilePath.mkdirs();  
- 	                }
-	            		copyFile(resourceFullPath, desFullPath);  
-	            		System.out.println(resourceFullPath+"复制完成"); 
-	            		filesNums = filesNums+1;
-	            } else if(fullFileName.indexOf("/WEB-INF/")!=-1 && fullFileName.endsWith(".jsp")) { //处理JSP
-
-	            		String resourceFullPath = null; //将要复制文件全路径
-	            		String desFullPath = null;      //复制文件后需要放置路径
-	            		String desFileName=fullFileName.substring(fullFileName.indexOf("/WEB-INF/"),fullFileName.length());
-	            		resourceFullPath = projectPath+"/"+fullFileName;//将要复制的文件全路径 
-	            		desFullPath = desPath+"/"+version+desFileName;  
-	            		File desFilePath=new File(desFullPath.substring(0,desFullPath.lastIndexOf("/")));  
-		                if(!desFilePath.exists()){  
-		                    desFilePath.mkdirs();  
-		                }
-	            		copyFile(resourceFullPath, desFullPath);  
-	            		System.out.println(resourceFullPath+"复制完成");
-	            		filesNums = filesNums+1;
-	            }
+		            	if(fullFileName.endsWith("js")) {
+		            		String desFileName=fullFileName.substring(fullFileName.indexOf("/resources/"),fullFileName.length());
+		            		resourceFullPath = projectPath+"/"+fullFileName;//将要复制的文件全路径 
+		            		desFullPath = desPath+"/"+version+desFileName;  
+		            		File desFilePath=new File(desFullPath.substring(0,desFullPath.lastIndexOf("/")));  
+	 	                if(!desFilePath.exists()){  
+	 	                    desFilePath.mkdirs();  
+	 	                }
+		            		copyFile(resourceFullPath, desFullPath);  
+//		            		System.out.println(filesNums+1+resourceFullPath+"复制完成"); 
+		            		copyFilesFullUrlLog.add(filesNums+1+resourceFullPath+"复制完成");
+		            		filesNums = filesNums+1;
+		            		
+	            		}else if(fullFileName.endsWith(".jsp")) {
+	            			
+		            		String desFileName=fullFileName.substring(fullFileName.indexOf("/WEB-INF/"),fullFileName.length());
+		            		resourceFullPath = projectPath+"/"+fullFileName;//将要复制的文件全路径 
+		            		desFullPath = desPath+"/"+version+desFileName;  
+		            		File desFilePath=new File(desFullPath.substring(0,desFullPath.lastIndexOf("/")));  
+			                if(!desFilePath.exists()){  
+			                    desFilePath.mkdirs();  
+			                }
+		            		copyFile(resourceFullPath, desFullPath);  
+//		            		System.out.println(filesNums+1+resourceFullPath+"复制完成");
+		            		copyFilesFullUrlLog.add(filesNums+1+resourceFullPath+"复制完成");
+		            		filesNums = filesNums+1;
+	            		}
+	            }else if(fullFileName.indexOf("src/main/resources/conf/")!=-1){  //处理conf目录下的文件
+	                String desFileName=fullFileName.substring(fullFileName.lastIndexOf("/resources/"),fullFileName.length());  
+	                desFileName = desFileName.replaceAll("/resources", "");
+	                fullFileName=projectPath+"/"+fullFileName;//将要复制的文件全路径  
+	                String fullDesFileNameStr=desPath+"/"+version+"/WEB-INF/classes"+desFileName;  
+	                String desFilePathStr=fullDesFileNameStr.substring(0,fullDesFileNameStr.lastIndexOf("/"));  
+	                File desFilePath=new File(desFilePathStr);  
+	                if(!desFilePath.exists()){  
+	                    desFilePath.mkdirs();  
+	                }  
+	                copyFile(fullFileName, fullDesFileNameStr);  
+//	                System.out.println(filesNums+1+fullDesFileNameStr+"复制完成");  
+	                copyFilesFullUrlLog.add(filesNums+1+fullDesFileNameStr+"复制完成");
+	                filesNums = filesNums+1;
+	            }else if(fullFileName.substring(0,fullFileName.lastIndexOf("/")).indexOf("src/main/resources")!=-1){  //处理其他放在/WEB-INF/classes/  目录下的配置文件 例如log、spring
+	            		String desFileName=fullFileName.substring(fullFileName.lastIndexOf("src/main/resources"),fullFileName.length());  
+					desFileName = desFileName.replaceAll("src/main/resources", "");
+					fullFileName=projectPath+"/"+fullFileName;//将要复制的文件全路径  
+					String fullDesFileNameStr=desPath+"/"+version+"/WEB-INF/classes"+desFileName;  
+					String desFilePathStr=fullDesFileNameStr.substring(0,fullDesFileNameStr.lastIndexOf("/"));  
+					File desFilePath=new File(desFilePathStr);  
+					if(!desFilePath.exists()){  
+					    desFilePath.mkdirs();  
+					}  
+					copyFile(fullFileName, fullDesFileNameStr);  
+//					System.out.println(filesNums+1+fullDesFileNameStr+"复制完成");  
+					copyFilesFullUrlLog.add(filesNums+1+fullDesFileNameStr+"复制完成");
+					filesNums = filesNums+1;
+				}else {  //记录没有匹配的项目
+					notFoundFiles.add(fullFileName);
+				}
 	        }  
-	        System.out.println("共处理文件数目 ："+filesNums);
+	        
+	        System.out.println("复制文件操作记录：");
+	        for (String copyFilesFullUrl : copyFilesFullUrlLog) {
+        			System.out.println(copyFilesFullUrl);
+	        }
+	        System.out.println("##############################################");
+	        System.out.println("待处理文件数目【changeLog】 ："+preFileCount);
+	        int sum = (preFileCount-notFoundFiles.size())+(innerClassFileCount-foundInnerClassFileCount);
+	        System.out.println("校验与【共复制文件数目（包含内部类）】是否相等（待处理文件数目 - 未能成功匹配的文件数）+（内部类总数（包含源文件）-发现内部类次数）= 【"+sum+"】");
+	        if(sum!=filesNums) {
+	        		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	        		System.out.println("@@@@@@@@@出错了！！！！！@@@@@@@@");
+	        		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	        }
+	        System.out.println("共复制文件数目（包含内部类） ："+filesNums);
+	        System.out.println("发现内部类次数 ："+foundInnerClassFileCount);
+	        System.out.println("内部类总数（包含源文件） ："+innerClassFileCount);
+	        System.out.println("未能成功匹配的文件数目 ："+notFoundFiles.size());
+	        String[] keys=notFoundFiles.toArray(new String[notFoundFiles.size()]);
+	        for (String string : keys) {
+	        		System.out.println(string);
+			}
+	        System.out.println("##############################################");
 	    }  
 	  
 	    
@@ -263,15 +353,16 @@ public class PlusPatchUtil {
 	        }
 	        File[] result = searchFile(folder, keyword);// 调用方法获得文件数组
 	        if(result.length>1) {//有内部类的时候才输出
-	        		System.out.println(keyword+"【发现内部类】\n");
-	        		System.out.println("在 " + folder + " 以及所有子文件时查找对象【内部类】" + keyword);
+	        	 	System.out.println("---------------------------------------------------------------------------------------------------------");
+	        		System.out.println(keyword+"【发现内部类】");
+	        		System.out.println("在 " + folder + " 以及所有子文件时查找对象：" + keyword);
+	        		System.out.println("查找了" + countFiles + " 个文件，" + countFolders + " 个文件夹，共找到 " + result.length + " 个符合条件的文件：");
         			for (int i = 0; i < result.length; i++) {// 循环显示文件
  	 	            File file = result[i];
  	 	            System.out.println(file.getAbsolutePath() + " ");// 显示文件绝对路径
  	 	            innerClassPath.add(file.getAbsolutePath());
  	 	        }
-	 	        System.out.println("查找了" + countFiles + " 个文件，" + countFolders + " 个文件夹，共找到 " + result.length + " 个符合条件的文件：");
-	 	        System.out.println("=========================================================================================================");
+	 	        System.out.println("---------------------------------------------------------------------------------------------------------");
 	        }
 	        return innerClassPath;
 	    }
@@ -281,6 +372,9 @@ public class PlusPatchUtil {
 	    public static void main(String[] args) {// java程序的主入口处  
 	    		//copyFiles(getPatchFileList());    //读取Txt的方式
 	        try {
+	        		int listSize = getPatchFileList(changeLogStr).size();
+	        		preFileCount = listSize;
+	        		System.out.println("提交后改变文件数是：【"+preFileCount+"】");
 				copyFiles(getPatchFileList(changeLogStr));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
