@@ -37,15 +37,15 @@ import java.util.regex.Pattern;
 public class PlusPatchUtil {
 	
 	
-		public static String projectPath = "//Users//liquanliang//git//FZS_FLOW_PLATFORM 3";//本地项目文件夹路径
+		public static String projectPath = "/Users/liquanliang/git/FZS_FLOW_PLATFORM";//本地项目文件夹路径
 	
 		public static String patchFile = projectPath+"//change.txt";//补丁文件,由git diff tag1 tag2 --name-only 生成  
      
-	    public static String classPath = projectPath+"//target//fzsFlow//WEB-INF//classes";//class文件存放路径  
+	    public static String classPath = projectPath+"/target/fzsFlow/WEB-INF/classes";//class文件存放路径  
 
-	    public static String resourcesPath = projectPath+"//target//fzsFlow//resources";//resources存放路径 
+	    public static String resourcesPath = projectPath+"/target/fzsFlow/resources";//resources存放路径 
 	      
-	    public static String desPath = projectPath+"//update_pkg";//补丁文件包存放路径  文件夹名称：update_pkg
+	    public static String desPath = projectPath+"/update_pkg";//补丁文件包存放路径  文件夹名称：update_pkg
 	      
 	    public static String version = "20180508";//补丁版本  
 	     
@@ -159,7 +159,6 @@ public class PlusPatchUtil {
 		                    desFilePath.mkdirs();  
 		                }
 	                		copyFile(fullFileName, desFileNameStr);  
-//	                		System.out.println(filesNums+1+fullFileName+"复制完成");
 	                		copyFilesFullUrlLog.add(filesNums+1+fullFileName+"复制完成");
 	                		filesNums = filesNums+1;
 	                }
@@ -177,7 +176,6 @@ public class PlusPatchUtil {
 	 	                    desFilePath.mkdirs();  
 	 	                }
 		            		copyFile(resourceFullPath, desFullPath);  
-//		            		System.out.println(filesNums+1+resourceFullPath+"复制完成"); 
 		            		copyFilesFullUrlLog.add(filesNums+1+resourceFullPath+"复制完成");
 		            		filesNums = filesNums+1;
 		            		
@@ -191,7 +189,6 @@ public class PlusPatchUtil {
 			                    desFilePath.mkdirs();  
 			                }
 		            		copyFile(resourceFullPath, desFullPath);  
-//		            		System.out.println(filesNums+1+resourceFullPath+"复制完成");
 		            		copyFilesFullUrlLog.add(filesNums+1+resourceFullPath+"复制完成");
 		            		filesNums = filesNums+1;
 	            		}
@@ -206,7 +203,6 @@ public class PlusPatchUtil {
 	                    desFilePath.mkdirs();  
 	                }  
 	                copyFile(fullFileName, fullDesFileNameStr);  
-//	                System.out.println(filesNums+1+fullDesFileNameStr+"复制完成");  
 	                copyFilesFullUrlLog.add(filesNums+1+fullDesFileNameStr+"复制完成");
 	                filesNums = filesNums+1;
 	            }else if(fullFileName.substring(0,fullFileName.lastIndexOf("/")).indexOf("src/main/resources")!=-1){  //处理其他放在/WEB-INF/classes/  目录下的配置文件 例如log、spring
@@ -220,7 +216,6 @@ public class PlusPatchUtil {
 					    desFilePath.mkdirs();  
 					}  
 					copyFile(fullFileName, fullDesFileNameStr);  
-//					System.out.println(filesNums+1+fullDesFileNameStr+"复制完成");  
 					copyFilesFullUrlLog.add(filesNums+1+fullDesFileNameStr+"复制完成");
 					filesNums = filesNums+1;
 				}else {  //记录没有匹配的项目
