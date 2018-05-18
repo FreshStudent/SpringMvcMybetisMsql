@@ -1,4 +1,4 @@
-package com.myprojct.ssm.rabbitmqSpringDemo;
+package com.myprojct.ssm.modules.rabbitmq.rabbitmqSpring;
 
 import java.io.IOException;
 

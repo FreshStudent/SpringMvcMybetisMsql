@@ -1,4 +1,4 @@
-package com.myprojct.ssm.thread;
+package com.myprojct.ssm.modules.thread;
 
 public class ThreadDemo {
 	

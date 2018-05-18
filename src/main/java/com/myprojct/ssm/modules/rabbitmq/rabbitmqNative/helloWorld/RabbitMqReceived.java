@@ -1,4 +1,4 @@
-package com.myprojct.ssm.rabbitmq.helloWorld;
+package com.myprojct.ssm.modules.rabbitmq.rabbitmqNative.helloWorld;
 
 import java.util.concurrent.TimeoutException;
 

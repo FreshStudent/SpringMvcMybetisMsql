@@ -1,4 +1,4 @@
-package com.myprojct.ssm.reloadRsBundleMsgSource;
+package com.myprojct.ssm.modules.springOsgi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

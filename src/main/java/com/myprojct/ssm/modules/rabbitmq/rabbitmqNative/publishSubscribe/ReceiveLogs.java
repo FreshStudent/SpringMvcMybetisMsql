@@ -1,4 +1,4 @@
-package com.myprojct.ssm.rabbitmq.PublishSubscribe;
+package com.myprojct.ssm.modules.rabbitmq.rabbitmqNative.publishSubscribe;
 
 import com.rabbitmq.client.*;
 

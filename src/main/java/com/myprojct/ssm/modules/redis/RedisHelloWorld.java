@@ -1,4 +1,4 @@
-package com.myprojct.ssm.redis;
+package com.myprojct.ssm.modules.redis;
 
 import redis.clients.jedis.Jedis;
 

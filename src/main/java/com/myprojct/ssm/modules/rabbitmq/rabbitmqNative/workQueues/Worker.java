@@ -1,4 +1,4 @@
-package com.myprojct.ssm.rabbitmq.workQueues;
+package com.myprojct.ssm.modules.rabbitmq.rabbitmqNative.workQueues;
 
 import com.rabbitmq.client.*;
 

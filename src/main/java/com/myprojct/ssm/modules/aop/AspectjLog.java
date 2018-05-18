@@ -1,4 +1,4 @@
-package com.myprojct.ssm.aop;
+package com.myprojct.ssm.modules.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

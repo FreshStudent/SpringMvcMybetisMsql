@@ -1,4 +1,4 @@
-package com.myprojct.ssm.rabbitmqSpringDemo;
+package com.myprojct.ssm.modules.rabbitmq.rabbitmqSpring;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
